@@ -7,7 +7,7 @@ import com.monframework.core.util.Annotation.HandleURL;
 public class TestUnController {
 
     @HandleURL(value = "test1url1")
-    public void url1(){
-
+    public String url1(){
+        return "Hello from TestUnController.url1()!\nCeci est le résultat de la méthode test1url1.";
     }
 }
