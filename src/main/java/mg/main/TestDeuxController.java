@@ -9,4 +9,11 @@ public class TestDeuxController {
     public String url1(){
         return "Bonjour de TestDeuxController!\nCette méthode retourne un message de test.";
     }
+
+    // Test pour la résolution de vue via ModelView
+    @HandleURL(value = "view")
+    public String view(){
+        // Vue simple située à la racine de l'application (webapp/)
+        return "/contact.jsp";
+    }
 }
