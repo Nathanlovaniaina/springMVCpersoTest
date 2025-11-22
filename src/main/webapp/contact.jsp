@@ -21,6 +21,16 @@
                 <li>Server Info : <%= application.getServerInfo() %></li>
             </ul>
         </div>
+        <!-- Affichage des attributs fournis par le contrôleur (si présents) -->
+        <div class="controller-data">
+            <h2>Données transmises par le contrôleur :</h2>
+            <ul>
+                <% Object titleAttr = request.getAttribute("title"); %>
+                <% Object messageAttr = request.getAttribute("message"); %>
+                <li>Titre : <%= titleAttr != null ? titleAttr : "(aucun)" %></li>
+                <li>Message : <%= messageAttr != null ? messageAttr : "(aucun)" %></li>
+            </ul>
+        </div>
         
         <div class="form">
             <h2>Formulaire de Contact :</h2>
