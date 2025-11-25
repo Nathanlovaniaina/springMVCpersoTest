@@ -7,11 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @ControleurAnnotation(value = "test2")
 public class TestDeuxController {
-    @HandleURL(value = "test2url1")
-    public String url1(){
-        return "Bonjour de TestDeuxController!\nCette méthode retourne un message de test.";
-    }
-
     // Test: passage de données en utilisant request.setAttribute + retour String
     @HandleURL(value = "view")
     public String view(HttpServletRequest request){
@@ -26,6 +21,15 @@ public class TestDeuxController {
         ModelView model = new ModelView("/contact.jsp");
         model.setValue("title", "Contact depuis Controller (view3 - ModelView)");
         model.setValue("message", "Ceci est un test du nouveau format retournant ModelView directement.");
+        return model;
+    }
+
+    // Test: path variable avec ModelView
+    @HandleURL(value = "view/{id}")
+    public ModelView viewById(Long id){
+        ModelView model = new ModelView("/contact.jsp");
+        model.setValue("title", "Contact avec ID - " + id);
+        model.setValue("message", "Vous avez demandé la page avec l'ID: " + id);
         return model;
     }
 }
