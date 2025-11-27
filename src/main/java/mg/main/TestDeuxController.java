@@ -3,6 +3,7 @@ package mg.main;
 import com.monframework.core.util.Annotation.ControleurAnnotation;
 import com.monframework.core.util.Annotation.HandleURL;
 import com.monframework.core.util.Annotation.RequestParam;
+import com.monframework.core.util.Annotation.PathVariable;
 import com.monframework.core.util.Mapper.ModelView;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -64,6 +65,27 @@ public class TestDeuxController {
         ModelView model = new ModelView("/contact.jsp");
         model.setValue("title", "Salut " + nom + " !");
         model.setValue("message", "Tu as " + age + " ans. (Annotation @RequestParam avec defaultValue)");
+        return model;
+    }
+
+    // Test: @PathVariable avec nom de variable différent
+    @HandleURL(value = "user/{userId}")
+    public ModelView viewUser(@PathVariable(value = "userId") Long id){
+        ModelView model = new ModelView("/contact.jsp");
+        model.setValue("title", "Profil Utilisateur");
+        model.setValue("message", "Affichage de l'utilisateur avec l'ID: " + id);
+        return model;
+    }
+
+    // Test: Combinaison @PathVariable et @RequestParam
+    @HandleURL(value = "product/{productId}/review")
+    public ModelView reviewProduct(
+            @PathVariable(value = "productId") Long prodId,
+            @RequestParam(value = "rating", defaultValue = "5") Integer note,
+            @RequestParam(value = "comment", defaultValue = "Aucun commentaire") String commentaire){
+        ModelView model = new ModelView("/contact.jsp");
+        model.setValue("title", "Avis sur le produit #" + prodId);
+        model.setValue("message", "Note: " + note + "/10 - Commentaire: " + commentaire);
         return model;
     }
 }
