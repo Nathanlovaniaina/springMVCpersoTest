@@ -2,6 +2,7 @@ package mg.main;
 
 import com.monframework.core.util.Annotation.ControleurAnnotation;
 import com.monframework.core.util.Annotation.HandleURL;
+import com.monframework.core.util.Annotation.RequestParam;
 import com.monframework.core.util.Mapper.ModelView;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -35,12 +36,14 @@ public class TestDeuxController {
         return new ModelView("/form.jsp");
     }
 
-    // Test: traitement GET avec request param
+    // Test: traitement GET avec request param et @RequestParam
     @HandleURL(value = "hello")
-    public ModelView sayHello(String name, Integer age){
+    public ModelView sayHello(
+            @RequestParam(value = "name", defaultValue = "inconnu") String name, 
+            @RequestParam(value = "age", defaultValue = "0") Integer age2){
         ModelView model = new ModelView("/contact.jsp");
-        model.setValue("title", "Bonjour " + (name != null ? name : "inconnu"));
-        model.setValue("message", "Vous avez " + (age != null ? age : "?") + " ans.");
+        model.setValue("title", "Bonjour " + name);
+        model.setValue("message", "Vous avez " + age2 + " ans.");
         return model;
     }
 
@@ -51,5 +54,16 @@ public class TestDeuxController {
         mv.setValue("title", "Formulaire soumis !");
         mv.setValue("message", "Merci " + nom + " (" + email + "). Votre message: " + message);
         return mv;
+    }
+
+    // Test: @RequestParam avec nom de variable différent et valeur par défaut
+    @HandleURL(value = "greet")
+    public ModelView greetWithAnnotation(
+            @RequestParam(value = "user_name", defaultValue = "Visiteur") String nom,
+            @RequestParam(value = "user_age", defaultValue = "18") Integer age){
+        ModelView model = new ModelView("/contact.jsp");
+        model.setValue("title", "Salut " + nom + " !");
+        model.setValue("message", "Tu as " + age + " ans. (Annotation @RequestParam avec defaultValue)");
+        return model;
     }
 }
