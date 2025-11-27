@@ -28,4 +28,28 @@ public class TestDeuxController {
         model.setValue("message", "Ceci est un test du nouveau format retournant ModelView directement.");
         return model;
     }
+
+    // Test: formulaire GET - afficher le formulaire
+    @HandleURL(value = "form")
+    public ModelView showForm(){
+        return new ModelView("/form.jsp");
+    }
+
+    // Test: traitement GET avec request param
+    @HandleURL(value = "hello")
+    public ModelView sayHello(String name, Integer age){
+        ModelView model = new ModelView("/contact.jsp");
+        model.setValue("title", "Bonjour " + (name != null ? name : "inconnu"));
+        model.setValue("message", "Vous avez " + (age != null ? age : "?") + " ans.");
+        return model;
+    }
+
+    // Test: traitement POST formulaire avec request params
+    @HandleURL(value = "submit")
+    public ModelView submitForm(String nom, String email, String message){
+        ModelView mv = new ModelView("/contact.jsp");
+        mv.setValue("title", "Formulaire soumis !");
+        mv.setValue("message", "Merci " + nom + " (" + email + "). Votre message: " + message);
+        return mv;
+    }
 }
