@@ -4,6 +4,8 @@ import com.monframework.core.util.Annotation.ControleurAnnotation;
 import com.monframework.core.util.Annotation.HandleURL;
 import com.monframework.core.util.Annotation.RequestParam;
 import com.monframework.core.util.Annotation.PathVariable;
+import com.monframework.core.util.Annotation.GetRequest;
+import com.monframework.core.util.Annotation.PostRequest;
 import com.monframework.core.util.Mapper.ModelView;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -87,5 +89,31 @@ public class TestDeuxController {
         model.setValue("title", "Avis sur le produit #" + prodId);
         model.setValue("message", "Note: " + note + "/10 - Commentaire: " + commentaire);
         return model;
+    }
+
+    // Test: Même URL mais méthode GET
+    @GetRequest(value = "order")
+    public ModelView getOrder(){
+        ModelView model = new ModelView("/contact.jsp");
+        model.setValue("title", "Affichage Commande (GET)");
+        model.setValue("message", "Vous consultez les commandes existantes.");
+        return model;
+    }
+
+    // Test: Même URL mais méthode POST
+    @PostRequest(value = "order")
+    public ModelView createOrder(
+            @RequestParam(value = "product", defaultValue = "inconnu") String product,
+            @RequestParam(value = "quantity", defaultValue = "1") Integer quantity){
+        ModelView model = new ModelView("/contact.jsp");
+        model.setValue("title", "Création Commande (POST)");
+        model.setValue("message", "Commande créée : " + quantity + "x " + product);
+        return model;
+    }
+
+    // Test: Page de test pour GET vs POST
+    @GetRequest(value = "test-methods")
+    public ModelView showTestMethodsPage(){
+        return new ModelView("/test-method.jsp");
     }
 }
