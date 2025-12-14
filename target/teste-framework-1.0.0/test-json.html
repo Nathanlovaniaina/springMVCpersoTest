@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API JSON</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #2196F3;
+            margin-top: 0;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .response {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .endpoint {
+            background-color: #e3f2fd;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .info {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .status-success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .status-error {
+            color: #f44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test des Endpoints JSON</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Objet Unique (Emp avec hobbies)</h2>
+        <div class="endpoint">GET /api/emp/single</div>
+        <p class="info">Retourne un employé unique avec ses hobbies. Utilise @JsonResponse avec code 200.</p>
+        <button onclick="testEndpoint('/api/emp/single', 'response1')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/single')">Ouvrir dans nouvel onglet</button>
+        <div id="response1" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Liste d'Objets</h2>
+        <div class="endpoint">GET /api/emp/list</div>
+        <p class="info">Retourne une liste de 2 employés. Format avec "count" et tableau "data".</p>
+        <button onclick="testEndpoint('/api/emp/list', 'response2')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/list')">Ouvrir dans nouvel onglet</button>
+        <div id="response2" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: Retour String (JSON manuel)</h2>
+        <div class="endpoint">GET /api/emp/string</div>
+        <p class="info">Retourne une String JSON directement (sans @JsonResponse).</p>
+        <button onclick="testEndpoint('/api/emp/string', 'response3')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/string')">Ouvrir dans nouvel onglet</button>
+        <div id="response3" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 4: Erreur (data null)</h2>
+        <div class="endpoint">GET /api/emp/error</div>
+        <p class="info">Teste le comportement avec un objet null. Code 404.</p>
+        <button onclick="testEndpoint('/api/emp/error', 'response4')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/error')">Ouvrir dans nouvel onglet</button>
+        <div id="response4" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <h1 style="margin-top: 40px;">🎯 Tests avec JsonResponseWrapper (Message/Code Dynamiques)</h1>
+
+    <div class="test-section">
+        <h2>Test 5: Success avec Wrapper</h2>
+        <div class="endpoint">GET /api/emp/wrapper-success</div>
+        <p class="info">Employé avec message et code définis dans la méthode (pas l'annotation).</p>
+        <button onclick="testEndpoint('/api/emp/wrapper-success', 'response5')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/wrapper-success')">Ouvrir dans nouvel onglet</button>
+        <div id="response5" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 6: Erreur 404 Dynamique</h2>
+        <div class="endpoint">GET /api/emp/wrapper-notfound</div>
+        <p class="info">Erreur "Employé introuvable" avec code 404 défini dynamiquement.</p>
+        <button onclick="testEndpoint('/api/emp/wrapper-notfound', 'response6')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/wrapper-notfound')">Ouvrir dans nouvel onglet</button>
+        <div id="response6" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 7: Création (Code 201)</h2>
+        <div class="endpoint">POST /api/emp/wrapper-create</div>
+        <p class="info">Simule une création d'employé avec code 201 (Created).</p>
+        <button onclick="testEndpointPost('/api/emp/wrapper-create', 'response7')">Tester</button>
+        <div id="response7" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 8: Erreur de Validation (422)</h2>
+        <div class="endpoint">GET /api/emp/wrapper-validation</div>
+        <p class="info">Erreur avec détails de validation et code 422 (Unprocessable Entity).</p>
+        <button onclick="testEndpoint('/api/emp/wrapper-validation', 'response8')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/wrapper-validation')">Ouvrir dans nouvel onglet</button>
+        <div id="response8" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 9: Statut Custom (pending)</h2>
+        <div class="endpoint">GET /api/emp/wrapper-custom</div>
+        <p class="info">Réponse avec statut personnalisé "pending" et code 202 (Accepted).</p>
+        <button onclick="testEndpoint('/api/emp/wrapper-custom', 'response9')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/wrapper-custom')">Ouvrir dans nouvel onglet</button>
+        <div id="response9" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 10: Liste avec Message Dynamique</h2>
+        <div class="endpoint">GET /api/emp/wrapper-list</div>
+        <p class="info">Liste d'employés avec message calculé dynamiquement selon le nombre.</p>
+        <button onclick="testEndpoint('/api/emp/wrapper-list', 'response10')">Tester</button>
+        <button onclick="openInNewTab('/api/emp/wrapper-list')">Ouvrir dans nouvel onglet</button>
+        <div id="response10" class="response">Cliquez sur "Tester" pour voir la réponse...</div>
+    </div>
+
+    <script>
+        // Obtenir le contexte de l'application dynamiquement
+        const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf('/', 1));
+        
+        function testEndpoint(endpoint, responseId) {
+            const fullUrl = contextPath + endpoint;
+            const responseDiv = document.getElementById(responseId);
+            responseDiv.textContent = 'Chargement...';
+            
+            fetch(fullUrl)
+                .then(response => {
+                    const statusClass = response.ok ? 'status-success' : 'status-error';
+                    return response.text().then(text => ({
+                        status: response.status,
+                        statusText: response.statusText,
+                        body: text,
+                        statusClass: statusClass
+                    }));
+                })
+                .then(data => {
+                    let formatted = '';
+                    formatted += `Status: ${data.status} ${data.statusText}\n`;
+                    formatted += '─'.repeat(50) + '\n\n';
+                    
+                    try {
+                        const json = JSON.parse(data.body);
+                        formatted += JSON.stringify(json, null, 2);
+                    } catch (e) {
+                        formatted += data.body;
+                    }
+                    
+                    responseDiv.innerHTML = `<span class="${data.statusClass}">Status: ${data.status} ${data.statusText}</span>\n${'─'.repeat(50)}\n\n` + 
+                                          formatted.substring(formatted.indexOf('\n\n') + 2);
+                })
+                .catch(error => {
+                    responseDiv.innerHTML = `<span class="status-error">Erreur: ${error.message}</span>`;
+                });
+        }
+        
+        function openInNewTab(endpoint) {
+            const fullUrl = contextPath + endpoint;
+            window.open(fullUrl, '_blank');
+        }
+
+        function testEndpointPost(endpoint, responseId) {
+            const fullUrl = contextPath + endpoint;
+            const responseDiv = document.getElementById(responseId);
+            responseDiv.textContent = 'Chargement...';
+            
+            // Données de test pour le POST
+            const formData = new URLSearchParams();
+            formData.append('emptest.id', '0');
+            formData.append('emptest.nom', 'Test Employé');
+            formData.append('emptest.nombre_membre', '5');
+            
+            fetch(fullUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData
+            })
+                .then(response => {
+                    const statusClass = response.ok ? 'status-success' : 'status-error';
+                    return response.text().then(text => ({
+                        status: response.status,
+                        statusText: response.statusText,
+                        body: text,
+                        statusClass: statusClass
+                    }));
+                })
+                .then(data => {
+                    let formatted = '';
+                    formatted += `Status: ${data.status} ${data.statusText}\n`;
+                    formatted += '─'.repeat(50) + '\n\n';
+                    
+                    try {
+                        const json = JSON.parse(data.body);
+                        formatted += JSON.stringify(json, null, 2);
+                    } catch (e) {
+                        formatted += data.body;
+                    }
+                    
+                    responseDiv.innerHTML = `<span class="${data.statusClass}">Status: ${data.status} ${data.statusText}</span>\n${'─'.repeat(50)}\n\n` + 
+                                          formatted.substring(formatted.indexOf('\n\n') + 2);
+                })
+                .catch(error => {
+                    responseDiv.innerHTML = `<span class="status-error">Erreur: ${error.message}</span>`;
+                });
+        }
+    </script>
+</body>
+</html>
