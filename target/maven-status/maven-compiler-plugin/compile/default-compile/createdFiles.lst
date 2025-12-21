@@ -6,3 +6,4 @@ mg\teste\Teste.class
 mg\main\OrderController.class
 mg\model\Hobbi.class
 mg\main\TestUnController.class
+mg\main\FileUploadController.class
