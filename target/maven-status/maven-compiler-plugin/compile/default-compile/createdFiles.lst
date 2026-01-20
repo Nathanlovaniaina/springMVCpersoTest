@@ -4,6 +4,7 @@ mg\teste\Main.class
 mg\main\EmpController.class
 mg\teste\Teste.class
 mg\main\OrderController.class
+mg\main\SessionTestController.class
 mg\model\Hobbi.class
 mg\main\TestUnController.class
 mg\main\FileUploadController.class
